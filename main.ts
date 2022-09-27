@@ -85,7 +85,7 @@ function finalChoice() {
     blockObject.setAnyProperty(FinalChoice1, AnyProp.NextPage, FinalChoice2)
     blockObject.setStringArrayProperty(FinalChoice2, StrArrayProp.Choices, ["Please!", "BUZZ OFF!!!!"])
     blockObject.setAnyProperty(FinalChoice2, AnyProp.Choice1, happyEnding())
-    blockObject.setAnyProperty(FinalChoice2, AnyProp.Choice2, 0)
+    blockObject.setAnyProperty(FinalChoice2, AnyProp.Choice2, sadEnding())
     return FinalChoice1
 }
 function happyEnding() {
@@ -98,6 +98,18 @@ function happyEnding() {
     blockObject.setAnyProperty(happy3, AnyProp.NextPage, happy4)
     return happy1
 }
+
+function sadEnding(){
+    sad1 = createScript("Pineapple", "then fell the thunder", 1)
+    sad2 = createScript("Mr. Kao", "Please don't kill me!", 2)
+    sad3 = createScript("Pineapple", "Too late", 1)
+    sad4 = createScript("Mr. Kao", "Nooo!!!", 4)
+    blockObject.setAnyProperty(sad1, AnyProp.NextPage, sad2)
+    blockObject.setAnyProperty(sad2, AnyProp.NextPage, sad3)
+    blockObject.setAnyProperty(sad3, AnyProp.NextPage, sad4)
+    return sad1
+}
+
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (choiceIndex == 1) {
         choiceIndex = 0
@@ -203,6 +215,10 @@ let happy4: blockObject.BlockObject = null
 let happy3: blockObject.BlockObject = null
 let happy2: blockObject.BlockObject = null
 let happy1: blockObject.BlockObject = null
+let sad1: blockObject.BlockObject = null
+let sad2: blockObject.BlockObject = null
+let sad3: blockObject.BlockObject = null
+let sad4: blockObject.BlockObject = null
 let character2: Sprite = null
 let character1: Sprite = null
 let choice2: TextSprite = null
