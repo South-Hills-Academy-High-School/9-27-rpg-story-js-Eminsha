@@ -13,6 +13,7 @@ namespace AnyProp {
     export const ChoiceResults = AnyProp.create()
     export const Choice1 = AnyProp.create()
     export const Choice2 = AnyProp.create()
+    export const Choice3 = AnyProp.create()
 }
 // Cloud portraits:
 // 
@@ -83,9 +84,10 @@ function finalChoice() {
     FinalChoice1 = createScript("Mr. Kao", "Well, I just need enough water for this garden here", 0)
     FinalChoice2 = createScript("Pineapple", "I can make that happen! What's the magic word?", 0)
     blockObject.setAnyProperty(FinalChoice1, AnyProp.NextPage, FinalChoice2)
-    blockObject.setStringArrayProperty(FinalChoice2, StrArrayProp.Choices, ["Please!", "BUZZ OFF!!!!"])
+    blockObject.setStringArrayProperty(FinalChoice2, StrArrayProp.Choices, ["Please!", "BUZZ OFF!!!!", "I want my lottery"])
     blockObject.setAnyProperty(FinalChoice2, AnyProp.Choice1, happyEnding())
     blockObject.setAnyProperty(FinalChoice2, AnyProp.Choice2, sadEnding())
+    blockObject.setAnyProperty(FinalChoice2, AnyProp.Choice3, supperHappyEnding())
     return FinalChoice1
 }
 function happyEnding() {
@@ -97,6 +99,15 @@ function happyEnding() {
     blockObject.setAnyProperty(happy2, AnyProp.NextPage, happy3)
     blockObject.setAnyProperty(happy3, AnyProp.NextPage, happy4)
     return happy1
+}
+
+function supperHappyEnding() {
+    supperhappy1 = createScript("Pineapple", "You Won 3B Dollars!!", 0)
+    supperhappy2 = createScript("Mr. Kao", "Omg thanks soo much", 3)
+    supperhappy3 = createScript("Pineapple", "No problem.", 4)
+    blockObject.setAnyProperty(supperhappy1, AnyProp.NextPage, supperhappy2)
+    blockObject.setAnyProperty(supperhappy2, AnyProp.NextPage, supperhappy3)
+    return supperhappy1
 }
 
 function sadEnding(){
@@ -135,13 +146,17 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (makingChoice) {
         choice1.setText("")
         choice2.setText("")
+        choice3.setText("")
         choice1.setFlag(SpriteFlag.Invisible, true)
         choice2.setFlag(SpriteFlag.Invisible, true)
+        choice3.setFlag(SpriteFlag.Invisible, true)
         makingChoice = false
         if (choiceIndex == 0) {
             currentScript = blockObject.getAnyProperty(currentScript, AnyProp.Choice1)
-        } else {
+        } else if (choiceIndex == 1) {
             currentScript = blockObject.getAnyProperty(currentScript, AnyProp.Choice2)
+        } else {
+            currentScript = blockObject.getAnyProperty(currentScript, AnyProp.Choice3)
         }
         printCurrentScript()
     }
@@ -182,10 +197,13 @@ function printCurrentScript() {
         if (blockObject.hasStringArrayProperty(currentScript, StrArrayProp.Choices)) {
             choice1.setText(blockObject.getStringArrayProperty(currentScript, StrArrayProp.Choices)[0])
             choice2.setText(blockObject.getStringArrayProperty(currentScript, StrArrayProp.Choices)[1])
+            choice3.setText(blockObject.getStringArrayProperty(currentScript, StrArrayProp.Choices)[2])
             choice1.setPosition(80, 70)
             choice2.setPosition(80, 90)
+            choice3.setPosition(80, 110)
             choice1.setFlag(SpriteFlag.Invisible, false)
             choice2.setFlag(SpriteFlag.Invisible, false)
+            choice3.setFlag(SpriteFlag.Invisible, false)
             makingChoice = true
             choiceIndex = 0
             updateChoices()
@@ -215,12 +233,16 @@ let happy4: blockObject.BlockObject = null
 let happy3: blockObject.BlockObject = null
 let happy2: blockObject.BlockObject = null
 let happy1: blockObject.BlockObject = null
+let supperhappy3: blockObject.BlockObject = null
+let supperhappy2: blockObject.BlockObject = null
+let supperhappy1: blockObject.BlockObject = null
 let sad1: blockObject.BlockObject = null
 let sad2: blockObject.BlockObject = null
 let sad3: blockObject.BlockObject = null
 let sad4: blockObject.BlockObject = null
 let character2: Sprite = null
 let character1: Sprite = null
+let choice3: TextSprite = null
 let choice2: TextSprite = null
 let choice1: TextSprite = null
 let oldGuyPortraits: Image[] = []
@@ -859,6 +881,7 @@ oldGuyPortraits = [
 createConversation()
 choice1 = textsprite.create("")
 choice2 = textsprite.create("")
+choice3 = textsprite.create("")
 printCurrentScript()
 character1 = sprites.create(img`
     . . . . . . . . . . . . . . . . 
